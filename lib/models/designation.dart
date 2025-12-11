@@ -5,11 +5,7 @@ class Designation {
   final String nameEn;
   final String nameBn;
 
-  Designation({
-    required this.id,
-    required this.nameEn,
-    required this.nameBn,
-  });
+  Designation({required this.id, required this.nameEn, required this.nameBn});
 
   factory Designation.fromJson(Map<String, dynamic> json) {
     return Designation(
@@ -20,11 +16,7 @@ class Designation {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'nameEn': nameEn,
-      'nameBn': nameBn,
-    };
+    return {'id': id, 'nameEn': nameEn, 'nameBn': nameBn};
   }
 
   String localizedName(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ubp/screens/intro_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ubp/l10n/app_localizations.dart';
+import 'package:ubp/screens/intro_screen.dart';
 
 // flutter gen-l10n
 
@@ -32,10 +32,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       locale: _locale,
-      supportedLocales: [
-        Locale('en'),
-        Locale('bn'),
-      ],
+      supportedLocales: [Locale('en'), Locale('bn')],
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

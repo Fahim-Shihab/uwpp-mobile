@@ -1,24 +1,31 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+
 import '../l10n/app_localizations.dart';
 import '../main.dart';
-import '../utils/form_utils.dart';
-import 'banking_screen.dart';
-import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import '../utils/constants.dart';
 import '../models/association.dart';
+import '../models/designation.dart';
 import '../models/factory.dart';
 import '../models/unemploymentReason.dart';
-import '../models/designation.dart';
+import '../utils/constants.dart';
+import '../utils/form_utils.dart';
+import 'banking_screen.dart';
 
 class DetailsWorkScreen extends StatefulWidget {
   final String token;
   final Map<String, dynamic> resJson;
   final Map<String, dynamic> userJson;
 
-  const DetailsWorkScreen({super.key, required this.token, required this.resJson, required this.userJson });
+  const DetailsWorkScreen({
+    super.key,
+    required this.token,
+    required this.resJson,
+    required this.userJson,
+  });
 
   @override
   DetailsWorkScreenState createState() => DetailsWorkScreenState();
@@ -27,6 +34,7 @@ class DetailsWorkScreen extends StatefulWidget {
 class DetailsWorkScreenState extends State<DetailsWorkScreen> {
   final _formKey = GlobalKey<FormState>();
   String token = "";
+
   // Controllers
   final _workerIdController = TextEditingController();
   Association? _association;
@@ -94,15 +102,13 @@ class DetailsWorkScreenState extends State<DetailsWorkScreen> {
     setState(() {});
   }
 
-  bool isFieldDisabled(TextEditingController controller) => controller.text.isNotEmpty;
+  bool isFieldDisabled(TextEditingController controller) =>
+      controller.text.isNotEmpty;
 
   Future<void> fetchAssociations() async {
     final response = await http.get(
-        Uri.parse('$actualBaseUrl/lookup/association/active'),
-        headers: {
-          'Accept': 'application/json',
-          "Authorization": "Bearer $token",
-        },
+      Uri.parse('$actualBaseUrl/lookup/association/active'),
+      headers: {'Accept': 'application/json', "Authorization": "Bearer $token"},
     );
 
     if (response.statusCode == 200) {
@@ -119,10 +125,7 @@ class DetailsWorkScreenState extends State<DetailsWorkScreen> {
   Future<void> fetchFactories(int id) async {
     final response = await http.get(
       Uri.parse('$actualBaseUrl/lookup/factory/active?associationId=$id'),
-      headers: {
-        'Accept': 'application/json',
-        "Authorization": "Bearer $token",
-      },
+      headers: {'Accept': 'application/json', "Authorization": "Bearer $token"},
     );
 
     if (response.statusCode == 200) {
@@ -137,28 +140,26 @@ class DetailsWorkScreenState extends State<DetailsWorkScreen> {
   }
 
   Future<void> fetchUnemploymentReasons() async {
-    final response = await http.get(Uri.parse('$actualBaseUrl/lookup/selection-reason/get'),
-      headers: {
-        'Accept': 'application/json',
-        "Authorization": "Bearer $token",
-      },
+    final response = await http.get(
+      Uri.parse('$actualBaseUrl/lookup/selection-reason/get'),
+      headers: {'Accept': 'application/json', "Authorization": "Bearer $token"},
     );
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       setState(() {
-        unemploymentReasons = data.map((json) => UnemploymentReason.fromJson(json)).toList();
+        unemploymentReasons = data
+            .map((json) => UnemploymentReason.fromJson(json))
+            .toList();
         _unemploymentReason = null;
       });
     }
   }
 
   Future<void> fetchDesignations() async {
-    final response = await http.get(Uri.parse('$actualBaseUrl/lookup/occupation/get'),
-      headers: {
-        'Accept': 'application/json',
-        "Authorization": "Bearer $token",
-      },
+    final response = await http.get(
+      Uri.parse('$actualBaseUrl/lookup/occupation/get'),
+      headers: {'Accept': 'application/json', "Authorization": "Bearer $token"},
     );
 
     if (response.statusCode == 200) {
@@ -169,7 +170,6 @@ class DetailsWorkScreenState extends State<DetailsWorkScreen> {
       });
     }
   }
-
 
   Future<void> _pickDate(BuildContext context, bool isEmployment) async {
     final picked = await showDatePicker(
@@ -195,21 +195,42 @@ class DetailsWorkScreenState extends State<DetailsWorkScreen> {
     return DateFormat('yyyy-MM-dd').format(date);
   }
 
+  String? _validateDoE(String? value) {
+    if (value == null || value.isEmpty) {
+      return AppLocalizations.of(context)!.validInput;
+    }
+    return null;
+  }
+
+  String? _validateUnemploymentReason(UnemploymentReason? value) {
+    if (value == null) {
+      return AppLocalizations.of(context)!.validInput;
+    }
+    return null;
+  }
+
   Future<void> _submitDetails() async {
-    if (_association == null || _factory == null || _employmentDate == null || _unemploymentDate == null || _unemploymentReason == null || _workerIdController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.fillFields)));
+    if (_association == null ||
+        _factory == null ||
+        _employmentDate == null ||
+        // _unemploymentDate == null ||
+        _unemploymentReason == null ||
+        _workerIdController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.fillFields)),
+      );
       return;
     }
-     //"association": _association!.id,
+    //"association": _association!.id,
     widget.userJson["institutionId"] = _factory!.id;
     if (_designation != null) {
       widget.userJson["occupation"] = _designation!.id;
     }
     widget.userJson["dateOfEmployment"] = _formatDate(_employmentDate);
-    widget.userJson["dateOfUnEmployment"] = _formatDate(_unemploymentDate);
-    widget.userJson["reason"] = {
-        "id": _unemploymentReason!.id,
-      };
+    if (_unemploymentDate != null) {
+      widget.userJson["dateOfUnEmployment"] = _formatDate(_unemploymentDate);
+    }
+    widget.userJson["reason"] = {"id": _unemploymentReason!.id};
     widget.userJson["workerId"] = _workerIdController.text;
     print("Final userJson");
     print(widget.userJson);
@@ -218,14 +239,10 @@ class DetailsWorkScreenState extends State<DetailsWorkScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => BankingPage(
-          token: token,
-          userJson: widget.userJson,
-        ),
+        builder: (_) => BankingPage(token: token, userJson: widget.userJson),
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -238,23 +255,25 @@ class DetailsWorkScreenState extends State<DetailsWorkScreen> {
             child: ElevatedButton(
               onPressed: () {
                 Locale current = Localizations.localeOf(context);
-                Locale newLocale = current.languageCode == 'en' ? Locale('bn') : Locale('en');
+                Locale newLocale = current.languageCode == 'en'
+                    ? Locale('bn')
+                    : Locale('en');
                 MyApp.setLocale(context, newLocale);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.lightBlue[100], // Light blue background
                 elevation: 0,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 4,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
               child: Text(
                 AppLocalizations.of(context)!.languageToggleButton,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black87,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.black87),
               ),
             ),
           ),
@@ -268,96 +287,167 @@ class DetailsWorkScreenState extends State<DetailsWorkScreen> {
             child: Column(
               children: [
                 DropdownButtonFormField<Association>(
-                  decoration: InputDecoration(label: buildRequiredLabel(AppLocalizations.of(context)!.association)),
-                  value: _association,
+                  decoration: InputDecoration(
+                    label: buildRequiredLabel(
+                      AppLocalizations.of(context)!.association,
+                    ),
+                  ),
+                  initialValue: _association,
                   items: associations.map((association) {
-                    return DropdownMenuItem(value: association, child: SizedBox(width: MediaQuery.of(context).size.width * 0.8, child: Text(association.localizedName(context))));
+                    return DropdownMenuItem(
+                      value: association,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Text(association.localizedName(context)),
+                      ),
+                    );
                   }).toList(),
                   onChanged: isAssociationPrefilled
                       ? null // disables the dropdown
                       : (value) {
-                    setState(() {
-                      _association = value;
-                      _factory = null;
-                    });
-                    fetchFactories(value!.id);
-                  },
+                          setState(() {
+                            _association = value;
+                            _factory = null;
+                          });
+                          fetchFactories(value!.id);
+                        },
                 ),
+                SizedBox(height: 10),
                 DropdownButtonFormField<Factory>(
-                  decoration: InputDecoration(label: buildRequiredLabel(AppLocalizations.of(context)!.factory)),
-                  value: _factory,
+                  decoration: InputDecoration(
+                    label: buildRequiredLabel(
+                      AppLocalizations.of(context)!.factory,
+                    ),
+                  ),
+                  initialValue: _factory,
                   items: factories.map((factory) {
-                    return DropdownMenuItem(value: factory, child: SizedBox(width: MediaQuery.of(context).size.width * 0.8, child: Text(factory.localizedName(context))));
+                    return DropdownMenuItem(
+                      value: factory,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Text(factory.localizedName(context)),
+                      ),
+                    );
                   }).toList(),
                   onChanged: isFactoryPrefilled
                       ? null // ✅ Disable only if prefilled from JSON
                       : (value) {
-                    setState(() {
-                      _factory = value;
-                    });
-                  },
+                          setState(() {
+                            _factory = value;
+                          });
+                        },
                 ),
+                SizedBox(height: 10),
                 DropdownButtonFormField<Designation>(
-                  decoration: InputDecoration(labelText: AppLocalizations.of(context)!.designation),
-                  value: _designation,
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.designation,
+                  ),
+                  initialValue: _designation,
                   items: designations.map((designation) {
-                    return DropdownMenuItem(value: designation, child: SizedBox(width: MediaQuery.of(context).size.width * 0.8, child: Text(designation.localizedName(context))));
+                    return DropdownMenuItem(
+                      value: designation,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Text(designation.localizedName(context)),
+                      ),
+                    );
                   }).toList(),
                   onChanged: (val) => setState(() => _designation = val),
                 ),
+                SizedBox(height: 10),
                 TextFormField(
                   controller: _workerIdController,
                   keyboardType: TextInputType.number,
                   enabled: !isFieldDisabled(_workerIdController),
                   inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly, // only allow numbers
-                    LengthLimitingTextInputFormatter(12),   // max 12 digits
+                    FilteringTextInputFormatter.digitsOnly,
+                    // only allow numbers
+                    LengthLimitingTextInputFormatter(12),
+                    // max 12 digits
                   ],
-                  decoration: InputDecoration(label: buildRequiredLabel(AppLocalizations.of(context)!.linNum)),
-                  //TODO: validate LIN Number
-                  // validator: (value) {
-                  //   if (value!.length != 12) {
-                  //     return AppLocalizations.of(context)!.linErr;
-                  //   }
-                  //   return null; // ✅ valid input
-                  // },
-                ),
-                SizedBox(height: 16),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: buildRequiredTextLabel(AppLocalizations.of(context)!.dateEmp),
-                ),
-
-                ElevatedButton(
-                  onPressed: isEmploymentDatePrefilled
-                      ? null // disable if prefilled
-                      : () => _pickDate(context, true),
-                  child: Text(
-                    _employmentDate == null
-                        ? AppLocalizations.of(context)!.pickDate
-                        : _formatDate(_employmentDate)!,
+                  decoration: InputDecoration(
+                    label: buildRequiredLabel(
+                      AppLocalizations.of(context)!.linNum,
+                    ),
                   ),
+                  validator: _validateDoE,
                 ),
-                SizedBox(height: 16),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: buildRequiredTextLabel(AppLocalizations.of(context)!.dateUnemp),
-                ),
-                ElevatedButton(
-                  child: Text(
-                    _unemploymentDate == null
-                        ? AppLocalizations.of(context)!.pickDate
-                        : _formatDate(_unemploymentDate)!,
+                SizedBox(height: 20),
+                TextFormField(
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.dateEmp,
+                    prefixIcon: const Icon(Icons.calendar_today),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                  onPressed: () => _pickDate(context, false),
+                  controller: TextEditingController(
+                    text: _employmentDate == null
+                        ? ""
+                        : DateFormat('yyyy-MM-dd').format(_employmentDate!),
+                  ),
+                  onTap: () async {
+                    final picked = !isEmploymentDatePrefilled
+                        ? await showDatePicker(
+                            context: context,
+                            initialDate: DateTime(2025),
+                            firstDate: DateTime(1925),
+                            lastDate: DateTime.now(),
+                          )
+                        : null;
+                    if (picked != null) {
+                      setState(() => _employmentDate = picked);
+                    }
+                  },
+                  validator: _validateDoE,
                 ),
+                SizedBox(height: 20),
+                TextFormField(
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.dateUnemp,
+                    prefixIcon: const Icon(Icons.calendar_today),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  controller: TextEditingController(
+                    text: _unemploymentDate == null
+                        ? ""
+                        : DateFormat('yyyy-MM-dd').format(_unemploymentDate!),
+                  ),
+                  onTap: () async {
+                    final picked = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime(2025),
+                      firstDate: DateTime(1925),
+                      lastDate: DateTime.now(),
+                    );
+                    if (picked != null) {
+                      setState(() => _unemploymentDate = picked);
+                    }
+                  },
+                ),
+                SizedBox(height: 10),
                 DropdownButtonFormField<UnemploymentReason>(
-                  decoration: InputDecoration(label: buildRequiredLabel(AppLocalizations.of(context)!.unempReason)),
-                  value: _unemploymentReason,
+                  decoration: InputDecoration(
+                    label: buildRequiredLabel(
+                      AppLocalizations.of(context)!.unempReason,
+                    ),
+                  ),
+                  initialValue: _unemploymentReason,
                   items: unemploymentReasons.map((reason) {
-                    return DropdownMenuItem(value: reason, child: SizedBox(width: MediaQuery.of(context).size.width * 0.8, child: Text(reason.localizedName(context))));
+                    return DropdownMenuItem(
+                      value: reason,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Text(reason.localizedName(context)),
+                      ),
+                    );
                   }).toList(),
                   onChanged: (val) => setState(() => _unemploymentReason = val),
+                  validator: _validateUnemploymentReason,
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(

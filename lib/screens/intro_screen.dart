@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ubp/screens/mobile_verify.dart';
 import 'package:ubp/main.dart';
-import '../l10n/app_localizations.dart';// To access MyApp.setLocale
+import 'package:ubp/screens/mobile_verify.dart';
+
+import '../l10n/app_localizations.dart'; // To access MyApp.setLocale
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -16,23 +17,25 @@ class HomePage extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 Locale current = Localizations.localeOf(context);
-                Locale newLocale = current.languageCode == 'en' ? Locale('bn') : Locale('en');
+                Locale newLocale = current.languageCode == 'en'
+                    ? Locale('bn')
+                    : Locale('en');
                 MyApp.setLocale(context, newLocale);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.lightBlue[100], // Light blue background
                 elevation: 0,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 4,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
               child: Text(
                 AppLocalizations.of(context)!.languageToggleButton,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black87,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.black87),
               ),
             ),
           ),
@@ -57,17 +60,14 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 50),
-              
+
                   Text(
                     AppLocalizations.of(context)!.appProgramme,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
-              
+
                   Text(
                     AppLocalizations.of(context)!.implementedBy,
                     style: TextStyle(
@@ -78,7 +78,7 @@ class HomePage extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
-              
+
                   // NEXT BUTTON
                   SizedBox(
                     width: 200,
@@ -86,12 +86,14 @@ class HomePage extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) =>  MobileVerifyScreen()),
+                          MaterialPageRoute(
+                            builder: (_) => MobileVerifyScreen(),
+                          ),
                         );
                       },
                       child: Text(AppLocalizations.of(context)!.next),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

@@ -1,16 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../main.dart';
-import 'waiting_screen.dart';
-import 'error_screen.dart';
-import 'otp_screen.dart';
-import '../utils/constants.dart';
+
 import '../l10n/app_localizations.dart';
+import '../main.dart';
+import '../utils/constants.dart';
+import 'otp_screen.dart';
+import 'waiting_screen.dart';
 
 class MobileVerifyScreen extends StatefulWidget {
-
   const MobileVerifyScreen({super.key});
 
   @override
@@ -21,10 +21,10 @@ class _MobileVerifyScreenState extends State<MobileVerifyScreen> {
   final _formKey = GlobalKey<FormState>();
   final _mobileController = TextEditingController();
 
-
   // Validate mobile: must be 11 digits, starts with 01
   String? _validateMobile(String? value) {
-    if (value == null || value.isEmpty) return AppLocalizations.of(context)!.errmob;
+    if (value == null || value.isEmpty)
+      return AppLocalizations.of(context)!.errmob;
     if (!RegExp(r'^01\d{9}$').hasMatch(value)) {
       return AppLocalizations.of(context)!.errmob2;
     }
@@ -33,13 +33,15 @@ class _MobileVerifyScreenState extends State<MobileVerifyScreen> {
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
+      final url = Uri.parse(
+        "$actualBaseUrl/applicant/self-registration/request-otp",
+      );
+      final body = json.encode({"mobileNumber": _mobileController.text});
 
-      final url = Uri.parse("$actualBaseUrl/applicant/self-registration/request-otp");
-      final body = json.encode({
-        "mobileNumber": _mobileController.text,
-      });
-
-      Navigator.push(context, MaterialPageRoute(builder: (_) => WaitingScreen()));
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => WaitingScreen()),
+      );
 
       try {
         final response = await http.post(
@@ -51,30 +53,33 @@ class _MobileVerifyScreenState extends State<MobileVerifyScreen> {
           body: body,
         );
 
-        // print(response.statusCode);
-        // print("The response body is" + response.body);
+        Navigator.pop(context);
+        print("Received response: ${response.statusCode} at ${DateTime.now()}");
+        print("The response body is" + response.body);
         final jsonResponse = json.decode(response.body);
         if (!mounted) return;
 
-        if (response.statusCode == 200 && jsonResponse['success']==true) {
-          // print('Status: ');
-          // print(jsonResponse['success']);
-          // print('Message: ');
-          // print(jsonResponse['message']);
+        if (response.statusCode == 200 && jsonResponse['success'] == true) {
+          print('Status: ');
+          print(jsonResponse['success']);
+          print('Message: ');
+          print(jsonResponse['message']);
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (_) => OtpScreen(
-                mobile: _mobileController.text,
-              ),
+              builder: (_) => OtpScreen(mobile: _mobileController.text),
             ),
           );
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(jsonResponse['message'])));
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(jsonResponse['message'])));
         }
       } catch (e) {
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: $e")));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Error: $e")));
       }
     }
   }
@@ -91,23 +96,25 @@ class _MobileVerifyScreenState extends State<MobileVerifyScreen> {
             child: ElevatedButton(
               onPressed: () {
                 Locale current = Localizations.localeOf(context);
-                Locale newLocale = current.languageCode == 'en' ? Locale('bn') : Locale('en');
+                Locale newLocale = current.languageCode == 'en'
+                    ? Locale('bn')
+                    : Locale('en');
                 MyApp.setLocale(context, newLocale);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.lightBlue[100], // Light blue background
                 elevation: 0,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 4,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
               child: Text(
                 AppLocalizations.of(context)!.languageToggleButton,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black87,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.black87),
               ),
             ),
           ),
@@ -120,21 +127,23 @@ class _MobileVerifyScreenState extends State<MobileVerifyScreen> {
             key: _formKey,
             child: Column(
               children: [
-        
+                const SizedBox(height: 250),
                 TextFormField(
                   controller: _mobileController,
                   keyboardType: TextInputType.phone,
                   maxLength: 11,
-                  decoration: InputDecoration(labelText: AppLocalizations.of(context)!.mobNum),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.mobNum,
+                  ),
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: _validateMobile,
                 ),
                 SizedBox(height: 10),
-        
+
                 ElevatedButton(
                   onPressed: _submitForm,
                   child: Text(AppLocalizations.of(context)!.submit),
-                )
+                ),
               ],
             ),
           ),

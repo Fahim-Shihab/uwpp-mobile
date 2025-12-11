@@ -1,13 +1,14 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:ubp/screens/landing_screen.dart';
 import 'package:ubp/screens/mobile_verify.dart';
-import 'dart:convert';
+
 import '../l10n/app_localizations.dart';
 import '../utils/constants.dart';
-
 
 class OtpScreen extends StatefulWidget {
   final String mobile;
@@ -50,13 +51,13 @@ class OtpScreenState extends State<OtpScreen> {
   }
 
   String? _validateOTP(String? value) {
-    if (value == null || value.isEmpty) return AppLocalizations.of(context)!.errotp;
+    if (value == null || value.isEmpty)
+      return AppLocalizations.of(context)!.errotp;
     if (value.length != 6) {
       return AppLocalizations.of(context)!.errotp2;
     }
     return null;
   }
-
 
   Future<void> _submitOTP() async {
     // Show loading dialog
@@ -74,14 +75,14 @@ class OtpScreenState extends State<OtpScreen> {
       ),
     );
 
-    final url = Uri.parse("$actualBaseUrl/applicant/self-registration/verify-otp");
+    final url = Uri.parse(
+      "$actualBaseUrl/applicant/self-registration/verify-otp",
+    );
 
     try {
       final response = await http.post(
         url,
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: {"Content-Type": "application/json"},
         body: json.encode({
           "mobileNumber": widget.mobile,
           "otp": _otpController.text,
@@ -100,37 +101,40 @@ class OtpScreenState extends State<OtpScreen> {
       if (response.statusCode == 200) {
         //TODO: only success == true
         if (res["success"] == true) {
-        //if (res["success"] == true || res["success"] == false) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => LandingScreen(
-                mobile: widget.mobile,
-                //token: token
-                //TODO: use token from response
-                token: res["token"]
+          if (res["existingApplicant"] ==  true) {
+
+          } else {
+            //if (res["success"] == true || res["success"] == false) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) =>
+                    LandingScreen(
+                      mobile: widget.mobile,
+                      //token: token
+                      //TODO: use token from response
+                      token: res["token"],
+                    ),
               ),
-            ),
-          );
+            );
+          }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(AppLocalizations.of(context)!.invalidOtp)),
           );
         }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Server error.")),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Server error.")));
       }
     } catch (e) {
       Navigator.pop(context); // Ensure loading dialog closes on error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Something went wrong.")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Something went wrong.")));
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -144,14 +148,20 @@ class OtpScreenState extends State<OtpScreen> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
+              const SizedBox(height: 150),
               Text(AppLocalizations.of(context)!.enterOTP),
+              const SizedBox(height: 10),
               Text(widget.mobile),
+              const SizedBox(height: 20),
               Text("${AppLocalizations.of(context)!.timeRem}$minutes:$seconds"),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: _otpController,
                 maxLength: 6,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.errotp),
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.errotp,
+                ),
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 validator: _validateOTP,
               ),

@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 import 'package:ubp/screens/landing_screen.dart';
+
 import '../l10n/app_localizations.dart';
 import '../utils/constants.dart';
-import 'package:http_parser/http_parser.dart';
 
 class UploadScreen extends StatefulWidget {
   final String nid;
@@ -15,7 +17,13 @@ class UploadScreen extends StatefulWidget {
   final String token;
   final String dob;
 
-  const UploadScreen({required this.nid, required this.mobile, required this.token, required this.dob, super.key});
+  const UploadScreen({
+    required this.nid,
+    required this.mobile,
+    required this.token,
+    required this.dob,
+    super.key,
+  });
 
   @override
   State<UploadScreen> createState() => _UploadScreenState();
@@ -31,7 +39,9 @@ class _UploadScreenState extends State<UploadScreen> {
   final ImagePicker _picker = ImagePicker();
 
   Future<void> pickImage(bool isEmployment) async {
-    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery); // Or use ImageSource.camera
+    final XFile? pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+    ); // Or use ImageSource.camera
 
     if (pickedFile != null) {
       setState(() {
@@ -56,24 +66,31 @@ class _UploadScreenState extends State<UploadScreen> {
       isSubmitting = true;
     });
 
-    final uri = Uri.parse("$actualBaseUrl/applicant/self-registration/upload-attachment");
+    final uri = Uri.parse(
+      "$actualBaseUrl/applicant/self-registration/upload-attachment",
+    );
 
     final token = widget.token;
     final request = http.MultipartRequest('POST', uri)
       ..headers['Authorization'] = 'Bearer $token'
-      ..fields['nid'] = widget.nid // exactly like Postman (text field)
-      ..files.add(await http.MultipartFile.fromPath(
-        'employment',
-        employmentImage!.path,
-        filename: p.basename(employmentImage!.path),
-        contentType: _getContentType(employmentImage!.path),
-      ))
-      ..files.add(await http.MultipartFile.fromPath(
-        'unemployment',
-        unemploymentImage!.path,
-        filename: p.basename(unemploymentImage!.path),
-        contentType: _getContentType(unemploymentImage!.path),
-      ));
+      ..fields['nid'] = widget
+          .nid // exactly like Postman (text field)
+      ..files.add(
+        await http.MultipartFile.fromPath(
+          'employment',
+          employmentImage!.path,
+          filename: p.basename(employmentImage!.path),
+          contentType: _getContentType(employmentImage!.path),
+        ),
+      )
+      ..files.add(
+        await http.MultipartFile.fromPath(
+          'unemployment',
+          unemploymentImage!.path,
+          filename: p.basename(unemploymentImage!.path),
+          contentType: _getContentType(unemploymentImage!.path),
+        ),
+      );
 
     final streamedResponse = await request.send();
     final response = await http.Response.fromStream(streamedResponse);
@@ -93,13 +110,20 @@ class _UploadScreenState extends State<UploadScreen> {
 
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (_) => LandingScreen(mobile: widget.mobile, token: widget.token)),
-              (route) => false,
+          MaterialPageRoute(
+            builder: (_) =>
+                LandingScreen(mobile: widget.mobile, token: widget.token),
+          ),
+          (route) => false,
         );
       } else {
         final errors = jsonDecode(response.body)["message"];
-        final errorMessage = errors is List ? errors.join('\n') : errors.toString();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage)));
+        final errorMessage = errors is List
+            ? errors.join('\n')
+            : errors.toString();
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(errorMessage)));
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -108,7 +132,7 @@ class _UploadScreenState extends State<UploadScreen> {
     }
   }
 
-// Helper to set correct content type based on file extension
+  // Helper to set correct content type based on file extension
   MediaType _getContentType(String filePath) {
     final ext = p.extension(filePath).toLowerCase();
     switch (ext) {
@@ -123,7 +147,6 @@ class _UploadScreenState extends State<UploadScreen> {
         return MediaType('application', 'octet-stream');
     }
   }
-
 
   Widget buildImageUploadSection({
     required String label,
@@ -162,7 +185,11 @@ class _UploadScreenState extends State<UploadScreen> {
             ),
             const SizedBox(width: 12),
             if (isUploading)
-              SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
+              SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
             else if (file != null)
               Expanded(
                 child: Text(
@@ -180,7 +207,9 @@ class _UploadScreenState extends State<UploadScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.uploadCertificate)),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.uploadCertificate),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -202,7 +231,14 @@ class _UploadScreenState extends State<UploadScreen> {
               ElevatedButton(
                 onPressed: isSubmitting ? null : submitFiles,
                 child: isSubmitting
-                    ? SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                    ? SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
                     : Text(AppLocalizations.of(context)!.submit),
               ),
             ],

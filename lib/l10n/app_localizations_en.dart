@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -33,10 +34,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'Unemployed Worker Self-Registration App';
 
   @override
-  String get appProgramme => 'Unemployed Worker Self-Registration App';
+  String get appProgramme => 'Unemployed Worker Protection Program';
 
   @override
-  String get implementedBy => 'Implemented By:\nCentral Fund\nMinistry of Labour and Employment';
+  String get implementedBy =>
+      'Implemented By:\nCentral Fund\nMinistry of Labour and Employment';
 
   @override
   String get registration => 'Please Login';
@@ -54,7 +56,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pickDate => 'Pick Date';
 
   @override
-  String get selectDob => 'Please Select Date of Birth';
+  String get selectDob => 'Date of Birth';
 
   @override
   String get submit => 'Submit';
@@ -64,6 +66,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errnid2 => 'NID must be 10 or 17 digits';
+
+  @override
+  String get emptyDoB => 'Please provide Date of Birth';
+
+  @override
+  String get emptyNameEn => 'Please provide English Name';
 
   @override
   String get errmob => 'Enter mobile number';
@@ -135,13 +143,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get uploadImage => 'Upload Image';
 
   @override
-  String get uploadCertificate => 'Upload Certificates';
+  String get uploadCertificate => 'Document Upload (Max 2MB)';
 
   @override
-  String get certEmp => 'Certificate of Employment';
+  String get certEmp =>
+      'Proof of Employment (ID Card, Appointment Letter, Service Book, Salary Slip)';
 
   @override
-  String get certUnemp => 'Certificate of Unemployment';
+  String get certUnemp =>
+      'Proof of Unemployment (Termination Letter, Factory Closure Notice, Layoff Notice)';
+
+  @override
+  String get nidCard => 'National ID (Clear copy of your NID)';
+
+  @override
+  String get facePhoto => 'Worker Own Photo';
 
   @override
   String get gender => 'Gender';
@@ -175,6 +191,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get religion => 'Religion';
+
+  @override
+  String get validInput => 'Required';
 
   @override
   String get presentAddress => 'Present Address';
@@ -231,7 +250,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get branch => 'Branch';
 
   @override
-  String get mfsProv => 'MFS Provider';
+  String get mfsProv => 'Mobile Bank';
 
   @override
   String get accName => 'Account Holder Name';
@@ -240,14 +259,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accNum => 'Account Number';
 
   @override
-  String get accNumErr => 'Account Number must be 11 or 12 digits';
+  String get accNumErr =>
+      'Account Number must be 11 or 12 digits and must start with 01';
 
   @override
-  String get mfsVerifiedFail => 'Failed to verify MFS';
+  String get bankAccNumErr => 'Bank Account Number must be 13 to 17 digits';
+
+  @override
+  String get mfsVerifiedFail => 'Failed to verify MFS Account';
+
+  @override
+  String get accountNonExistent => 'This MFS Account does not exist';
+
+  @override
+  String get accountNidNotMatchedWithGivenNid =>
+      'The given NID does not own this MFS Account';
+
+  @override
+  String get simNidNotMatchedWithGivenNid =>
+      'The given NID does not own this SIM';
 
   @override
   String get mfsVerifiedSuccess => 'Successfully verified MFS';
 
   @override
-  String get pleaseVerifyMfs => 'Please verfiy your MFS';
+  String get pleaseVerifyMfs => 'Please verify your MFS';
 }

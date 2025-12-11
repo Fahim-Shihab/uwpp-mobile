@@ -19,7 +19,8 @@ Widget buildRequiredTextLabel(String text, {TextStyle? style}) {
   return RichText(
     text: TextSpan(
       text: text,
-      style: style ??
+      style:
+          style ??
           const TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.black,
@@ -28,10 +29,7 @@ Widget buildRequiredTextLabel(String text, {TextStyle? style}) {
       children: const [
         TextSpan(
           text: ' *',
-          style: TextStyle(
-            color: Colors.red,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
         ),
       ],
     ),

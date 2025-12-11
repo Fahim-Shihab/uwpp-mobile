@@ -4,11 +4,15 @@ class UnemploymentReason {
   final int id;
   final String nameEn;
   final String nameBn;
+  final String shortNameEn;
+  final String shortNameBn;
 
   UnemploymentReason({
     required this.id,
     required this.nameEn,
     required this.nameBn,
+    required this.shortNameEn,
+    required this.shortNameBn,
   });
 
   factory UnemploymentReason.fromJson(Map<String, dynamic> json) {
@@ -16,6 +20,8 @@ class UnemploymentReason {
       id: json['id'],
       nameEn: json['nameEn'],
       nameBn: json['nameBn'],
+      shortNameEn: json['shortNameEn'],
+      shortNameBn: json['shortNameBn'],
     );
   }
 
@@ -24,12 +30,14 @@ class UnemploymentReason {
       'id': id,
       'nameEn': nameEn,
       'nameBn': nameBn,
+      'shortNameEn': shortNameEn,
+      'shortNameBn': shortNameBn,
     };
   }
 
   String localizedName(BuildContext context) {
     return Localizations.localeOf(context).languageCode == 'bn'
-        ? nameBn
-        : nameEn;
+        ? shortNameBn
+        : shortNameEn;
   }
 }

@@ -4,11 +4,14 @@ import 'package:ubp/screens/intro_screen.dart';
 import '../l10n/app_localizations.dart';
 
 class AddGrievanceScreen extends StatefulWidget {
-
   final String mobile;
   final String token;
 
-  const AddGrievanceScreen({super.key, required this.mobile, required this.token});
+  const AddGrievanceScreen({
+    super.key,
+    required this.mobile,
+    required this.token,
+  });
 
   @override
   State<AddGrievanceScreen> createState() => _AddGrievanceScreenState();
@@ -48,7 +51,7 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (_) => const HomePage()),
-            (route) => false, // removes all previous routes
+        (route) => false, // removes all previous routes
       );
     }
   }
@@ -56,9 +59,7 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.submitGriev),
-      ),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.submitGriev)),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -68,21 +69,21 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
               child: Column(
                 children: [
                   DropdownButtonFormField<String>(
-                    decoration: InputDecoration(labelText: AppLocalizations.of(context)!.grievType),
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.grievType,
+                    ),
                     value: selectedGrievanceType,
                     items: grievanceTypes.map((type) {
-                      return DropdownMenuItem(
-                        value: type,
-                        child: Text(type),
-                      );
+                      return DropdownMenuItem(value: type, child: Text(type));
                     }).toList(),
                     onChanged: (value) {
                       setState(() {
                         selectedGrievanceType = value;
                       });
                     },
-                    validator: (value) =>
-                    value == null ? AppLocalizations.of(context)!.enterGrievType : null,
+                    validator: (value) => value == null
+                        ? AppLocalizations.of(context)!.enterGrievType
+                        : null,
                   ),
                   const SizedBox(height: 20),
                   TextFormField(

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ubp/screens/mobile_verify.dart';
 import 'package:ubp/screens/registration_screen.dart';
+
 import '../l10n/app_localizations.dart';
 
 class ErrorScreen extends StatelessWidget {
-
   final String mobile;
   final String token;
 
@@ -25,11 +24,12 @@ class ErrorScreen extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => RegistrationScreen(mobile: mobile, token: token),
+                      builder: (_) =>
+                          RegistrationScreen(mobile: mobile, token: token),
                     ),
                   );
                 },
-              )
+              ),
             ],
           ),
         ),

@@ -4,13 +4,14 @@ class District {
   final int id;
   final String nameEn;
   final String nameBn;
-  final int divisionId;
+
+  // final int divisionId;
 
   District({
     required this.id,
     required this.nameEn,
     required this.nameBn,
-    required this.divisionId,
+    // required this.divisionId,
   });
 
   factory District.fromJson(Map<String, dynamic> json) {
@@ -18,7 +19,7 @@ class District {
       id: json['id'],
       nameEn: json['nameEn'],
       nameBn: json['nameBn'],
-      divisionId: json['divisionId'],
+      // divisionId: json['divisionId'],
     );
   }
 
@@ -27,7 +28,7 @@ class District {
       'id': id,
       'nameEn': nameEn,
       'nameBn': nameBn,
-      'divisionId': divisionId,
+      // 'divisionId': divisionId,
     };
   }
 

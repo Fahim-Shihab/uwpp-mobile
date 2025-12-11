@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ubp/screens/mobile_verify.dart';
-import '../l10n/app_localizations.dart';
 
+import '../l10n/app_localizations.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -23,9 +23,7 @@ class SplashScreenState extends State<SplashScreen> {
     try {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (_) => MobileVerifyScreen(),
-        ),
+        MaterialPageRoute(builder: (_) => MobileVerifyScreen()),
       );
     } catch (e) {
       setState(() {
@@ -41,19 +39,19 @@ class SplashScreenState extends State<SplashScreen> {
         child: Center(
           child: errorMessage != null
               ? Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(errorMessage!),
-              SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() => errorMessage = null);
-                  initialize();
-                },
-                child: Text(AppLocalizations.of(context)!.retry),
-              ),
-            ],
-          )
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(errorMessage!),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() => errorMessage = null);
+                        initialize();
+                      },
+                      child: Text(AppLocalizations.of(context)!.retry),
+                    ),
+                  ],
+                )
               : CircularProgressIndicator(),
         ),
       ),

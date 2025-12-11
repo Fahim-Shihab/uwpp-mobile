@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -36,7 +37,8 @@ class AppLocalizationsBn extends AppLocalizations {
   String get appProgramme => 'কর্মহীন শ্রমিকদের সুরক্ষা কর্মসূচি';
 
   @override
-  String get implementedBy => 'বাস্তবায়নে:\nকেন্দ্রীয় তহবিল\nশ্রম ও কর্মসংস্থান মন্ত্রণালয়';
+  String get implementedBy =>
+      'বাস্তবায়নে:\nকেন্দ্রীয় তহবিল\nশ্রম ও কর্মসংস্থান মন্ত্রণালয়';
 
   @override
   String get registration => 'নিবন্ধন করুন';
@@ -45,7 +47,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get login => 'লগইন';
 
   @override
-  String get mobNum => 'কর্মহীন শ্রামিকদের মোবাইল নম্বর';
+  String get mobNum => 'কর্মহীন শ্রমিকদের মোবাইল নম্বর';
 
   @override
   String get nidNum => 'জাতীয় পরিচয়পত্র নম্বর';
@@ -54,7 +56,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get pickDate => 'তারিখ নির্বাচন করুন';
 
   @override
-  String get selectDob => 'জন্ম তারিখ নির্বাচন করুন';
+  String get selectDob => 'জন্ম তারিখ';
 
   @override
   String get submit => 'জমা দিন';
@@ -64,6 +66,12 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get errnid2 => 'জাতীয় পরিচয়পত্র অবশ্যই ১০ অথবা ১৭ সংখ্যার হতে হবে';
+
+  @override
+  String get emptyDoB => 'জন্মতারিখ দিন';
+
+  @override
+  String get emptyNameEn => 'ইংরেজি নাম দিন';
 
   @override
   String get errmob => 'মোবাইল নম্বর লিখুন';
@@ -90,7 +98,8 @@ class AppLocalizationsBn extends AppLocalizations {
   String get otpVerifying => 'ওটিপি যাচাই করা হচ্ছে...';
 
   @override
-  String get enterOTP => 'আপনার মোবাইলে পাঠানো ৬-সংখ্যার এককালীন পাসওয়ার্ড লিখুন।';
+  String get enterOTP =>
+      'আপনার মোবাইলে পাঠানো ৬-সংখ্যার এককালীন পাসওয়ার্ড লিখুন।';
 
   @override
   String get timeRem => 'বাকি সময়: ';
@@ -135,13 +144,21 @@ class AppLocalizationsBn extends AppLocalizations {
   String get uploadImage => 'ছবি আপলোড করুন';
 
   @override
-  String get uploadCertificate => 'সার্টিফিকেট আপলোড করুন';
+  String get uploadCertificate => 'ডকুমেন্ট আপলোড (সর্বোচ্চ ২এমবি)';
 
   @override
-  String get certEmp => 'কর্মসংস্থানের সার্টিফিকেট';
+  String get certEmp =>
+      'চাকরির প্রমাণ (আইডি কার্ড, অ্যাপয়েন্টমেন্ট লেটার, সার্ভিস বুক, স্যালারি স্লিপ)';
 
   @override
-  String get certUnemp => 'বেকারত্বের সার্টিফিকেট';
+  String get certUnemp =>
+      'বেকারত্বের প্রমাণ (চূড়ান্তপত্র, কারখানা বন্ধের নোটিশ, চাকরি ছাঁটাই নোটিশ)';
+
+  @override
+  String get nidCard => 'জাতীয় পরিচয়পত্র (এনআইডির পরিষ্কার প্রতিলিপি)';
+
+  @override
+  String get facePhoto => 'কর্মীর নিজস্ব ছবি';
 
   @override
   String get gender => 'লিঙ্গ';
@@ -177,6 +194,9 @@ class AppLocalizationsBn extends AppLocalizations {
   String get religion => 'ধর্ম';
 
   @override
+  String get validInput => 'প্রয়োজনীয়';
+
+  @override
   String get presentAddress => 'বর্তমান ঠিকানা';
 
   @override
@@ -192,7 +212,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get permanentAddress => 'স্থায়ী ঠিকানা';
 
   @override
-  String get association => 'Association';
+  String get association => 'অ্যাসোসিয়েশন';
 
   @override
   String get factory => 'কারখানা';
@@ -207,13 +227,13 @@ class AppLocalizationsBn extends AppLocalizations {
   String get linErr => 'লিন নম্বরটি অবশ্যই ঠিক ১২ সংখ্যার হতে হবে।';
 
   @override
-  String get dateEmp => 'নিয়োগের তারিখ';
+  String get dateEmp => 'চাকুরীতে যোগদানের তারিখ';
 
   @override
-  String get dateUnemp => 'বেকারত্বের তারিখ';
+  String get dateUnemp => 'চাকরি হারানোর তারিখ';
 
   @override
-  String get unempReason => 'বেকারত্বের কারণ';
+  String get unempReason => 'কর্মহীনতার কারণ';
 
   @override
   String get failBankSubmit => 'ব্যাঙ্কিং বিবরণ জমা দিতে ব্যর্থ।';
@@ -222,7 +242,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get bankingInfo => 'ব্যাংকিং তথ্য';
 
   @override
-  String get paymentMode => 'পেমেন্ট মোড';
+  String get paymentMode => 'পেমেন্ট পরিশোধের মাধ্যম';
 
   @override
   String get bank => 'ব্যাংক';
@@ -231,7 +251,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get branch => 'শাখা';
 
   @override
-  String get mfsProv => 'মোবাইল ফাইন্যান্স প্রদানকারী';
+  String get mfsProv => 'মোবাইল ব্যাংক';
 
   @override
   String get accName => 'অ্যাকাউন্টধারীর নাম';
@@ -240,14 +260,33 @@ class AppLocalizationsBn extends AppLocalizations {
   String get accNum => 'অ্যাকাউন্ট নম্বর';
 
   @override
-  String get accNumErr => 'অ্যাকাউন্ট নম্বর অবশ্যই ১১ বা ১২ সংখ্যার হতে হবে';
+  String get accNumErr =>
+      'মোবাইল ব্যাংক অ্যাকাউন্ট নম্বর অবশ্যই ১১ বা ১২ সংখ্যার হতে হবে এবং ০১ দিয়ে শুরু হতে হবে';
 
   @override
-  String get mfsVerifiedFail => 'মোবাইল ফাইন্যান্স যাচাই করতে ব্যর্থ';
+  String get bankAccNumErr =>
+      'ব্যাংক অ্যাকাউন্ট নম্বর অবশ্যই ১৩ বা ১৭ সংখ্যার হতে হবে';
 
   @override
-  String get mfsVerifiedSuccess => 'সফলভাবে যাচাই মোবাইল ফাইন্যান্স করা হয়েছে';
+  String get mfsVerifiedFail => 'মোবাইল ব্যাংক অ্যাকাউন্ট যাচাই করতে ব্যর্থ';
 
   @override
-  String get pleaseVerifyMfs => 'দয়া করে আপনার মোবাইল ফাইন্যান্স যাচাই করুন';
+  String get accountNonExistent =>
+      'এই মোবাইল ব্যাংকিং অ্যাকাউন্টটির অস্তিত্ব নেই';
+
+  @override
+  String get accountNidNotMatchedWithGivenNid =>
+      'প্রদত্ত এনআইডি এই মোবাইল ব্যাংকিং অ্যাকাউন্টের মালিক নয়';
+
+  @override
+  String get simNidNotMatchedWithGivenNid =>
+      'প্রদত্ত এনআইডি এই সিমটির মালিক নয়';
+
+  @override
+  String get mfsVerifiedSuccess =>
+      'সফলভাবে মোবাইল ব্যাংক অ্যাকাউন্ট যাচাই করা হয়েছে';
+
+  @override
+  String get pleaseVerifyMfs =>
+      'দয়া করে আপনার মোবাইল ব্যাংক অ্যাকাউন্ট যাচাই করুন';
 }

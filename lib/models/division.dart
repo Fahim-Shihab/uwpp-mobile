@@ -5,11 +5,7 @@ class Division {
   final String nameEn;
   final String nameBn;
 
-  Division({
-    required this.id,
-    required this.nameEn,
-    required this.nameBn,
-  });
+  Division({required this.id, required this.nameEn, required this.nameBn});
 
   factory Division.fromJson(Map<String, dynamic> json) {
     return Division(
@@ -20,11 +16,7 @@ class Division {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'nameEn': nameEn,
-      'nameBn': nameBn,
-    };
+    return {'id': id, 'nameEn': nameEn, 'nameBn': nameBn};
   }
 
   String localizedName(BuildContext context) {
@@ -32,5 +24,4 @@ class Division {
         ? nameBn
         : nameEn;
   }
-
 }

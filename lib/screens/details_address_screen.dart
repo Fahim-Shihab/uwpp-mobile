@@ -1,15 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:ubp/screens/details_work_screen.dart';
-import '../l10n/app_localizations.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../main.dart';
-import '../utils/constants.dart';
-import '../models/division.dart';
-import '../models/district.dart';
-import '../models/upazila.dart';
-import 'package:collection/collection.dart';
 
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:ubp/screens/details_work_screen.dart';
+
+import '../l10n/app_localizations.dart';
+import '../main.dart';
+import '../models/district.dart';
+import '../models/division.dart';
+import '../models/upazila.dart';
+import '../utils/constants.dart';
 import '../utils/form_utils.dart';
 
 class DetailsAddressScreen extends StatefulWidget {
@@ -17,7 +18,12 @@ class DetailsAddressScreen extends StatefulWidget {
   final Map<String, dynamic> resJson;
   final Map<String, dynamic> userJson;
 
-  const DetailsAddressScreen({super.key, required this.token, required this.resJson, required this.userJson });
+  const DetailsAddressScreen({
+    super.key,
+    required this.token,
+    required this.resJson,
+    required this.userJson,
+  });
 
   @override
   DetailsAddressScreenState createState() => DetailsAddressScreenState();
@@ -46,7 +52,6 @@ class DetailsAddressScreenState extends State<DetailsAddressScreen> {
     super.initState();
     token = widget.token;
     print(widget.userJson);
-    //print(mockResponseJson);
     initializeData();
   }
 
@@ -61,13 +66,19 @@ class DetailsAddressScreenState extends State<DetailsAddressScreen> {
     final String? presentDistrictCode = present?['districtCode'];
     final String? presentUpazilaCode = present?['upazilaCode'];
 
-    _presentDivision = divisions.firstWhereOrNull((d) => d.id.toString() == presentDivisionCode);
+    _presentDivision = divisions.firstWhereOrNull(
+      (d) => d.id.toString() == presentDivisionCode,
+    );
     if (_presentDivision != null) {
       await fetchPresentDistricts(_presentDivision!.id);
-      _presentDistrict = presentDistricts.firstWhereOrNull((d) => d.id.toString() == presentDistrictCode);
+      _presentDistrict = presentDistricts.firstWhereOrNull(
+        (d) => d.id.toString() == presentDistrictCode,
+      );
       if (_presentDistrict != null) {
         await fetchPresentUpazilas(_presentDistrict!.id);
-        _presentUpazila = presentUpazilas.firstWhereOrNull((u) => u.id.toString() == presentUpazilaCode);
+        _presentUpazila = presentUpazilas.firstWhereOrNull(
+          (u) => u.id.toString() == presentUpazilaCode,
+        );
       }
     }
 
@@ -77,29 +88,32 @@ class DetailsAddressScreenState extends State<DetailsAddressScreen> {
     final String? permanentDistrictCode = permanent?['districtCode'];
     final String? permanentUpazilaCode = permanent?['upazilaCode'];
 
-    _permanentDivision = divisions.firstWhereOrNull((d) => d.id.toString() == permanentDivisionCode);
+    _permanentDivision = divisions.firstWhereOrNull(
+      (d) => d.id.toString() == permanentDivisionCode,
+    );
     if (_permanentDivision != null) {
       await fetchPermanentDistricts(_permanentDivision!.id);
-      _permanentDistrict = permanentDistricts.firstWhereOrNull((d) => d.id.toString() == permanentDistrictCode);
+      _permanentDistrict = permanentDistricts.firstWhereOrNull(
+        (d) => d.id.toString() == permanentDistrictCode,
+      );
       if (_permanentDistrict != null) {
         await fetchPermanentUpazilas(_permanentDistrict!.id);
-        _permanentUpazila = permanentUpazilas.firstWhereOrNull((u) => u.id.toString() == permanentUpazilaCode);
+        _permanentUpazila = permanentUpazilas.firstWhereOrNull(
+          (u) => u.id.toString() == permanentUpazilaCode,
+        );
       }
     }
 
     setState(() {});
   }
 
-  bool isFieldDisabled(TextEditingController controller) => controller.text.isNotEmpty;
-
+  bool isFieldDisabled(TextEditingController controller) =>
+      controller.text.isNotEmpty;
 
   Future<void> fetchDivisions() async {
     final response = await http.get(
       Uri.parse('$actualBaseUrl/lookup/division/get'),
-      headers: {
-        'Accept': 'application/json',
-        "Authorization": "Bearer $token",
-      },
+      headers: {'Accept': 'application/json', "Authorization": "Bearer $token"},
     );
 
     if (response.statusCode == 200) {
@@ -113,8 +127,15 @@ class DetailsAddressScreenState extends State<DetailsAddressScreen> {
   }
 
   Future<void> _submitDetails() async {
-    if (_presentDivision == null || _presentDistrict == null || _presentUpazila == null || _permanentDivision == null || _permanentDistrict == null || _permanentUpazila == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.fillFields)));
+    if (_presentDivision == null ||
+        _presentDistrict == null ||
+        _presentUpazila == null ||
+        _permanentDivision == null ||
+        _permanentDistrict == null ||
+        _permanentUpazila == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.fillFields)),
+      );
       return;
     }
     widget.userJson["division"] = _presentDivision!.id;
@@ -140,10 +161,7 @@ class DetailsAddressScreenState extends State<DetailsAddressScreen> {
   Future<void> fetchPresentDistricts(int id) async {
     final response = await http.get(
       Uri.parse('$actualBaseUrl/lookup/district/get?divisionId=$id'),
-      headers: {
-        'Accept': 'application/json',
-        "Authorization": "Bearer $token",
-      },
+      headers: {'Accept': 'application/json', "Authorization": "Bearer $token"},
     );
 
     if (response.statusCode == 200) {
@@ -160,16 +178,15 @@ class DetailsAddressScreenState extends State<DetailsAddressScreen> {
   Future<void> fetchPermanentDistricts(int id) async {
     final response = await http.get(
       Uri.parse('$actualBaseUrl/lookup/district/get?divisionId=$id'),
-      headers: {
-        'Accept': 'application/json',
-        "Authorization": "Bearer $token",
-      },
+      headers: {'Accept': 'application/json', "Authorization": "Bearer $token"},
     );
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       setState(() {
-        permanentDistricts = data.map((json) => District.fromJson(json)).toList();
+        permanentDistricts = data
+            .map((json) => District.fromJson(json))
+            .toList();
         _permanentDistrict = null;
         permanentUpazilas = [];
         _permanentUpazila = null;
@@ -180,10 +197,7 @@ class DetailsAddressScreenState extends State<DetailsAddressScreen> {
   Future<void> fetchPresentUpazilas(int id) async {
     final response = await http.get(
       Uri.parse('$actualBaseUrl/lookup/upazila/get?districtId=$id'),
-      headers: {
-        'Accept': 'application/json',
-        "Authorization": "Bearer $token",
-      },
+      headers: {'Accept': 'application/json', "Authorization": "Bearer $token"},
     );
 
     if (response.statusCode == 200) {
@@ -195,14 +209,10 @@ class DetailsAddressScreenState extends State<DetailsAddressScreen> {
     }
   }
 
-
   Future<void> fetchPermanentUpazilas(int id) async {
     final response = await http.get(
       Uri.parse('$actualBaseUrl/lookup/upazila/get?districtId=$id'),
-      headers: {
-        'Accept': 'application/json',
-        "Authorization": "Bearer $token",
-      },
+      headers: {'Accept': 'application/json', "Authorization": "Bearer $token"},
     );
 
     if (response.statusCode == 200) {
@@ -213,7 +223,6 @@ class DetailsAddressScreenState extends State<DetailsAddressScreen> {
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -226,23 +235,25 @@ class DetailsAddressScreenState extends State<DetailsAddressScreen> {
             child: ElevatedButton(
               onPressed: () {
                 Locale current = Localizations.localeOf(context);
-                Locale newLocale = current.languageCode == 'en' ? Locale('bn') : Locale('en');
+                Locale newLocale = current.languageCode == 'en'
+                    ? Locale('bn')
+                    : Locale('en');
                 MyApp.setLocale(context, newLocale);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.lightBlue[100], // Light blue background
                 elevation: 0,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 4,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
               child: Text(
                 AppLocalizations.of(context)!.languageToggleButton,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black87,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.black87),
               ),
             ),
           ),
@@ -255,12 +266,25 @@ class DetailsAddressScreenState extends State<DetailsAddressScreen> {
             key: _formKey,
             child: Column(
               children: [
-                Text(AppLocalizations.of(context)!.presentAddress, style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(
+                  AppLocalizations.of(context)!.presentAddress,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 DropdownButtonFormField<Division>(
-                  decoration: InputDecoration(label: buildRequiredLabel(AppLocalizations.of(context)!.division)),
-                  value: _presentDivision,
+                  decoration: InputDecoration(
+                    label: buildRequiredLabel(
+                      AppLocalizations.of(context)!.division,
+                    ),
+                  ),
+                  initialValue: _presentDivision,
                   items: divisions.map((division) {
-                    return DropdownMenuItem(value: division, child: SizedBox(width: MediaQuery.of(context).size.width * 0.8, child: Text(division.localizedName(context))));
+                    return DropdownMenuItem(
+                      value: division,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Text(division.localizedName(context)),
+                      ),
+                    );
                   }).toList(),
                   onChanged: (value) {
                     setState(() {
@@ -271,11 +295,22 @@ class DetailsAddressScreenState extends State<DetailsAddressScreen> {
                     fetchPresentDistricts(value!.id);
                   },
                 ),
+                SizedBox(height: 10),
                 DropdownButtonFormField<District>(
-                  decoration: InputDecoration(label: buildRequiredLabel(AppLocalizations.of(context)!.district)),
-                  value: _presentDistrict,
+                  decoration: InputDecoration(
+                    label: buildRequiredLabel(
+                      AppLocalizations.of(context)!.district,
+                    ),
+                  ),
+                  initialValue: _presentDistrict,
                   items: presentDistricts.map((district) {
-                    return DropdownMenuItem(value: district, child: SizedBox(width: MediaQuery.of(context).size.width * 0.8, child: Text(district.localizedName(context))));
+                    return DropdownMenuItem(
+                      value: district,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Text(district.localizedName(context)),
+                      ),
+                    );
                   }).toList(),
                   onChanged: (value) {
                     setState(() {
@@ -285,21 +320,46 @@ class DetailsAddressScreenState extends State<DetailsAddressScreen> {
                     fetchPresentUpazilas(value!.id);
                   },
                 ),
+                SizedBox(height: 10),
                 DropdownButtonFormField<Upazila>(
-                  decoration: InputDecoration(label: buildRequiredLabel(AppLocalizations.of(context)!.upazila)),
-                  value: _presentUpazila,
+                  decoration: InputDecoration(
+                    label: buildRequiredLabel(
+                      AppLocalizations.of(context)!.upazila,
+                    ),
+                  ),
+                  initialValue: _presentUpazila,
                   items: presentUpazilas.map((upazila) {
-                    return DropdownMenuItem(value: upazila, child: SizedBox(width: MediaQuery.of(context).size.width * 0.8, child: Text(upazila.localizedName(context))));
+                    return DropdownMenuItem(
+                      value: upazila,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Text(upazila.localizedName(context)),
+                      ),
+                    );
                   }).toList(),
                   onChanged: (val) => setState(() => _presentUpazila = val),
                 ),
+                SizedBox(height: 20),
                 Divider(),
-                Text(AppLocalizations.of(context)!.permanentAddress, style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(
+                  AppLocalizations.of(context)!.permanentAddress,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 DropdownButtonFormField<Division>(
-                  decoration: InputDecoration(label: buildRequiredLabel(AppLocalizations.of(context)!.division)),
-                  value: _permanentDivision,
+                  decoration: InputDecoration(
+                    label: buildRequiredLabel(
+                      AppLocalizations.of(context)!.division,
+                    ),
+                  ),
+                  initialValue: _permanentDivision,
                   items: divisions.map((division) {
-                    return DropdownMenuItem(value: division, child: SizedBox(width: MediaQuery.of(context).size.width * 0.8, child: Text(division.localizedName(context))));
+                    return DropdownMenuItem(
+                      value: division,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Text(division.localizedName(context)),
+                      ),
+                    );
                   }).toList(),
                   onChanged: (value) {
                     setState(() {
@@ -310,11 +370,22 @@ class DetailsAddressScreenState extends State<DetailsAddressScreen> {
                     fetchPermanentDistricts(value!.id);
                   },
                 ),
+                SizedBox(height: 10),
                 DropdownButtonFormField<District>(
-                  decoration: InputDecoration(label: buildRequiredLabel(AppLocalizations.of(context)!.district)),
-                  value: _permanentDistrict,
+                  decoration: InputDecoration(
+                    label: buildRequiredLabel(
+                      AppLocalizations.of(context)!.district,
+                    ),
+                  ),
+                  initialValue: _permanentDistrict,
                   items: permanentDistricts.map((district) {
-                    return DropdownMenuItem(value: district, child: SizedBox(width: MediaQuery.of(context).size.width * 0.8, child: Text(district.localizedName(context))));
+                    return DropdownMenuItem(
+                      value: district,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Text(district.localizedName(context)),
+                      ),
+                    );
                   }).toList(),
                   onChanged: (value) {
                     setState(() {
@@ -324,17 +395,27 @@ class DetailsAddressScreenState extends State<DetailsAddressScreen> {
                     fetchPermanentUpazilas(value!.id);
                   },
                 ),
+                SizedBox(height: 10),
                 DropdownButtonFormField<Upazila>(
-                  decoration: InputDecoration(label: buildRequiredLabel(AppLocalizations.of(context)!.upazila)),
-                  value: _permanentUpazila,
+                  decoration: InputDecoration(
+                    label: buildRequiredLabel(
+                      AppLocalizations.of(context)!.upazila,
+                    ),
+                  ),
+                  initialValue: _permanentUpazila,
                   items: permanentUpazilas.map((upazila) {
-                    return DropdownMenuItem(value: upazila, child: SizedBox(width: MediaQuery.of(context).size.width * 0.8, child: Text(upazila.localizedName(context))));
+                    return DropdownMenuItem(
+                      value: upazila,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Text(upazila.localizedName(context)),
+                      ),
+                    );
                   }).toList(),
                   onChanged: (value) {
                     setState(() {
                       _permanentUpazila = value;
                     });
-        
                   },
                 ),
 

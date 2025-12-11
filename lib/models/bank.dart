@@ -5,26 +5,14 @@ class Bank {
   final String nameEn;
   final String nameBn;
 
-  Bank({
-    required this.id,
-    required this.nameEn,
-    required this.nameBn,
-  });
+  Bank({required this.id, required this.nameEn, required this.nameBn});
 
   factory Bank.fromJson(Map<String, dynamic> json) {
-    return Bank(
-      id: json['id'],
-      nameEn: json['nameEn'],
-      nameBn: json['nameBn'],
-    );
+    return Bank(id: json['id'], nameEn: json['nameEn'], nameBn: json['nameBn']);
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'nameEn': nameEn,
-      'nameBn': nameBn,
-    };
+    return {'id': id, 'nameEn': nameEn, 'nameBn': nameBn};
   }
 
   String localizedName(BuildContext context) {
