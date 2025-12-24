@@ -98,15 +98,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   nid: _nidController.text,
                   dob: DateFormat("yyyy-MM-dd").format(_dob!),
                   token: token,
+                  nameEn: _nameController.text,
                   resJson: jsonResponse,
                 ),
               ),
             );
           } else {
             Navigator.pop(context);
+            String msg = "Could not verify";
+            if (jsonResponse['message'] != null) {
+              msg = jsonResponse['message'];
+            } else if (jsonResponse["ibasResponse"]["errorMsg"] != null) {
+              msg = jsonResponse["ibasResponse"]["errorMsg"];
+            }
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(SnackBar(content: Text(jsonResponse['message'])));
+            ).showSnackBar(SnackBar(content: Text(msg)));
           }
         } else {
           Navigator.pushReplacement(
@@ -121,7 +128,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         Navigator.pop(context);
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text("Error: $e")));
+        ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.errorVerifying)));
       }
     }
   }

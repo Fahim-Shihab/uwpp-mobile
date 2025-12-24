@@ -289,4 +289,49 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get pleaseVerifyMfs =>
       'দয়া করে আপনার মোবাইল ব্যাংক অ্যাকাউন্ট যাচাই করুন';
+
+  @override
+  String get applicantDashboard => 'প্রার্থী ড্যাশবোর্ড';
+
+  @override
+  String get status => 'স্ট্যাটাস';
+
+  @override
+  String get paymentInfo => 'পেমেন্ট তথ্য';
+
+  @override
+  String get paymentCycle => 'পেমেন্ট চক্র';
+
+  @override
+  String get paymentAmount => 'ভাতা পরিমাণ';
+
+  @override
+  String get paymentStatus => 'পেমেন্ট স্ট্যাটাস';
+
+  @override
+  String get grievanceInfo => 'অভিযোগ তথ্য';
+
+  @override
+  String get complainDate => 'অভিযোগের তারিখ';
+
+  @override
+  String get trackingNumber => 'ট্রাকিং নাম্বার';
+
+  @override
+  String get complainDetails => 'অভিযোগ';
+
+  @override
+  String get grievanceType => 'অভিযোগের ধরন';
+
+  @override
+  String get grievanceStatus => 'অভিযোগ স্ট্যাটাস';
+
+  @override
+  String get errorRequestingOtp => 'ওটিপি পাঠানো সম্ভব হয়নি।';
+
+  @override
+  String get errorVerifying => 'যাচাই করতে সার্ভারে সমস্যা হয়েছে।';
+
+  @override
+  String get activeOfficeHours => 'শুধুমাত্র সরকারি কর্মদিবসে সকাল ৯ঃ০০-বিকাল ৫ঃ০০ পর্যন্ত অ্যাপটি ব্যবহার করা যাবে।';
 }

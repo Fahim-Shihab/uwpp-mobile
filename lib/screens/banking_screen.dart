@@ -8,6 +8,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 import 'package:ubp/screens/landing_screen.dart';
+import 'package:ubp/screens/tracking_screen.dart';
 import 'package:ubp/screens/waiting_screen.dart';
 
 import '../l10n/app_localizations.dart';
@@ -184,8 +185,14 @@ class _BankingPageState extends State<BankingPage> {
 
     Navigator.pushAndRemoveUntil(
       context,
+      // MaterialPageRoute(
+      //   builder: (_) => LandingScreen(
+      //     mobile: widget.userJson["mobileNumber"],
+      //     token: widget.token,
+      //   ),
+      // ),
       MaterialPageRoute(
-        builder: (_) => LandingScreen(
+        builder: (_) => ApplicantDashboardScreen(
           mobile: widget.userJson["mobileNumber"],
           token: widget.token,
         ),

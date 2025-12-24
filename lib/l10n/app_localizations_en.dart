@@ -284,4 +284,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pleaseVerifyMfs => 'Please verify your MFS';
+
+  @override
+  String get applicantDashboard => 'Applicant Dashboard';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get paymentInfo => 'Payment Information';
+
+  @override
+  String get paymentCycle => 'Payment Cycle';
+
+  @override
+  String get paymentAmount => 'Payment Amount';
+
+  @override
+  String get paymentStatus => 'Payment Status';
+
+  @override
+  String get grievanceInfo => 'Grievance Information';
+
+  @override
+  String get complainDate => 'Complain Date';
+
+  @override
+  String get trackingNumber => 'Tracking Number';
+
+  @override
+  String get complainDetails => 'Complain Details';
+
+  @override
+  String get grievanceType => 'Grievance Type';
+
+  @override
+  String get grievanceStatus => 'Grievance Status';
+
+  @override
+  String get errorRequestingOtp => 'Could not send OTP.';
+
+  @override
+  String get errorVerifying => 'Error verifying';
+
+  @override
+  String get activeOfficeHours => 'This app can only be used on government working days from 9 AM to 5 PM';
 }

@@ -601,6 +601,26 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please verfiy your MFS'**
   String get pleaseVerifyMfs;
+
+  String get applicantDashboard;
+
+  String get status;
+
+  String get paymentInfo;
+  String get paymentCycle;
+  String get paymentAmount;
+  String get paymentStatus;
+
+  String get grievanceInfo;
+  String get complainDate;
+  String get trackingNumber;
+  String get complainDetails;
+  String get grievanceType;
+  String get grievanceStatus;
+
+  String get errorRequestingOtp;
+  String get errorVerifying;
+  String get activeOfficeHours;
 }
 
 class _AppLocalizationsDelegate

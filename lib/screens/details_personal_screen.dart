@@ -16,6 +16,7 @@ class DetailsPersonalScreen extends StatefulWidget {
   final String mobile;
   final String dob;
   final String token;
+  final String nameEn;
   final Map<String, dynamic> resJson;
 
   const DetailsPersonalScreen({
@@ -24,6 +25,7 @@ class DetailsPersonalScreen extends StatefulWidget {
     required this.mobile,
     required this.dob,
     required this.token,
+    required this.nameEn,
     required this.resJson,
   });
 
@@ -59,7 +61,7 @@ class DetailsPersonalScreenState extends State<DetailsPersonalScreen> {
   Future<void> initializeData() async {
     await fetchDistricts();
     final lims = widget.resJson['limsResponse'];
-    _nameEnController.text = lims?['nameEn'] as String? ?? '';
+    _nameEnController.text = widget.nameEn;
     _fatherEnController.text = lims?['fatherNameEn'] as String? ?? '';
     _motherEnController.text = lims?['motherNameEn'] as String? ?? '';
     _nameBnController.text = lims?['nameBn'] as String? ?? '';

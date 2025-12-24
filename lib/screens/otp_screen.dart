@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:ubp/screens/landing_screen.dart';
 import 'package:ubp/screens/mobile_verify.dart';
+import 'package:ubp/screens/tracking_screen.dart';
 
 import '../l10n/app_localizations.dart';
 import '../utils/constants.dart';
@@ -102,17 +103,23 @@ class OtpScreenState extends State<OtpScreen> {
         //TODO: only success == true
         if (res["success"] == true) {
           if (res["existingApplicant"] ==  true) {
-
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) =>
+                    ApplicantDashboardScreen(
+                      mobile: widget.mobile,
+                      token: res["token"],
+                    ),
+              ),
+            );
           } else {
-            //if (res["success"] == true || res["success"] == false) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (_) =>
                     LandingScreen(
                       mobile: widget.mobile,
-                      //token: token
-                      //TODO: use token from response
                       token: res["token"],
                     ),
               ),

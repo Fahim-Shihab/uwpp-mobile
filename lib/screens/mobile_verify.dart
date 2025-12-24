@@ -31,7 +31,32 @@ class _MobileVerifyScreenState extends State<MobileVerifyScreen> {
     return null;
   }
 
+  bool isWithinWorkingHours([DateTime? dateTime]) {
+    final now = dateTime ?? DateTime.now();
+
+    const allowedDays = {
+      DateTime.sunday,
+      DateTime.monday,
+      DateTime.tuesday,
+      DateTime.wednesday,
+      DateTime.thursday
+    };
+
+    if (!allowedDays.contains(now.weekday)) return false;
+
+    final start = DateTime(now.year, now.month, now.day, 9);
+    final end   = DateTime(now.year, now.month, now.day, 15);
+
+    return now.isAfter(start) && now.isBefore(end);
+  }
+
   Future<void> _submitForm() async {
+    if (!isWithinWorkingHours(DateTime.now())) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.activeOfficeHours)));
+    }
     if (_formKey.currentState!.validate()) {
       final url = Uri.parse(
         "$actualBaseUrl/applicant/self-registration/request-otp",
@@ -79,7 +104,7 @@ class _MobileVerifyScreenState extends State<MobileVerifyScreen> {
         Navigator.pop(context);
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text("Error: $e")));
+        ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.errorRequestingOtp)));
       }
     }
   }
@@ -134,11 +159,13 @@ class _MobileVerifyScreenState extends State<MobileVerifyScreen> {
                   maxLength: 11,
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.mobNum,
+                    labelStyle: TextStyle(fontSize: 20),
                   ),
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: _validateMobile,
+                  style: TextStyle(fontSize: 24),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 24),
 
                 ElevatedButton(
                   onPressed: _submitForm,
