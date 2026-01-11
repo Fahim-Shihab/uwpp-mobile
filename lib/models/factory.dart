@@ -3,22 +3,19 @@ import 'package:flutter/material.dart';
 class Factory {
   final int id;
   final String nameEn;
-  final String nameBn;
-  final int associationId;
+  final int parent;
 
   Factory({
     required this.id,
     required this.nameEn,
-    required this.nameBn,
-    required this.associationId,
+    required this.parent,
   });
 
   factory Factory.fromJson(Map<String, dynamic> json) {
     return Factory(
       id: json['id'],
       nameEn: json['nameEn'],
-      nameBn: json['nameBn'],
-      associationId: json['associationId'],
+      parent: json['parent'],
     );
   }
 
@@ -26,14 +23,13 @@ class Factory {
     return {
       'id': id,
       'nameEn': nameEn,
-      'nameBn': nameBn,
-      'associationId': associationId,
+      'parent': parent,
     };
   }
 
   String localizedName(BuildContext context) {
     return Localizations.localeOf(context).languageCode == 'bn'
-        ? nameBn
+        ? nameEn
         : nameEn;
   }
 }

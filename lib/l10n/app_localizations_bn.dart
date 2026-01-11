@@ -297,6 +297,9 @@ class AppLocalizationsBn extends AppLocalizations {
   String get status => 'স্ট্যাটাস';
 
   @override
+  String get birthPlace => 'জন্মস্থান';
+
+  @override
   String get paymentInfo => 'পেমেন্ট তথ্য';
 
   @override

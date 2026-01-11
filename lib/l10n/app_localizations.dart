@@ -606,6 +606,8 @@ abstract class AppLocalizations {
 
   String get status;
 
+  String get birthPlace;
+
   String get paymentInfo;
   String get paymentCycle;
   String get paymentAmount;

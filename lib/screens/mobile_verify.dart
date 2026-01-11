@@ -45,7 +45,7 @@ class _MobileVerifyScreenState extends State<MobileVerifyScreen> {
     if (!allowedDays.contains(now.weekday)) return false;
 
     final start = DateTime(now.year, now.month, now.day, 9);
-    final end   = DateTime(now.year, now.month, now.day, 15);
+    final end = DateTime(now.year, now.month, now.day, 17);
 
     return now.isAfter(start) && now.isBefore(end);
   }
@@ -56,6 +56,7 @@ class _MobileVerifyScreenState extends State<MobileVerifyScreen> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.activeOfficeHours)));
+      return;
     }
     if (_formKey.currentState!.validate()) {
       final url = Uri.parse(
@@ -84,6 +85,12 @@ class _MobileVerifyScreenState extends State<MobileVerifyScreen> {
         final jsonResponse = json.decode(response.body);
         if (!mounted) return;
 
+        // if (jsonResponse != null) {
+        //   ScaffoldMessenger.of(
+        //     context,
+        //   ).showSnackBar(SnackBar(content: Text(jsonResponse.toString())));
+        // }
+
         if (response.statusCode == 200 && jsonResponse['success'] == true) {
           print('Status: ');
           print(jsonResponse['success']);
@@ -104,7 +111,7 @@ class _MobileVerifyScreenState extends State<MobileVerifyScreen> {
         Navigator.pop(context);
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.errorRequestingOtp)));
+        ).showSnackBar(SnackBar(content: Text('${AppLocalizations.of(context)!.errorRequestingOtp}\n$e')));
       }
     }
   }

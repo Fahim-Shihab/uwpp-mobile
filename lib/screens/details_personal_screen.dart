@@ -332,7 +332,7 @@ class DetailsPersonalScreenState extends State<DetailsPersonalScreen> {
                 DropdownButtonFormField<District>(
                   decoration: InputDecoration(
                     label: buildRequiredLabel(
-                      AppLocalizations.of(context)!.district,
+                      AppLocalizations.of(context)!.birthPlace,
                     ),
                   ),
                   initialValue: _birthPlaceDistrict,

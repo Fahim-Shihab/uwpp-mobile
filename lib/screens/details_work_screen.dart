@@ -124,7 +124,7 @@ class DetailsWorkScreenState extends State<DetailsWorkScreen> {
 
   Future<void> fetchFactories(int id) async {
     final response = await http.get(
-      Uri.parse('$actualBaseUrl/lookup/factory/active?associationId=$id'),
+      Uri.parse('$actualBaseUrl/lookup/factory-only-name-en/active?associationId=$id'),
       headers: {'Accept': 'application/json', "Authorization": "Bearer $token"},
     );
 

@@ -292,6 +292,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get status => 'Status';
 
   @override
+  String get birthPlace => 'Birth Place';
+
+  @override
   String get paymentInfo => 'Payment Information';
 
   @override
